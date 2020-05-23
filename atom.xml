@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-05-22T11:00:39.785Z</updated>
+    <updated>2020-05-23T09:59:26.539Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -54,40 +54,46 @@
 第四轮循环：１.更新当前导数值：f'(x₁) = 1.994 - 2 = 0.006；<br>
 　　　　　　 2.修改当前参数值：x₁ = x₁ - η*f'(x₁) = 1.994 - 0.9*(-0.006) = 1.9994;　　　　　　　　　　　<br>
 　　　　　　　　　　　　　　　△x = -0.9*(0.006) = 0.0054；<br>
-　　　　　　 3.将△x与ε 进行比较，△x =0.0054  &gt; ε = 0.01；如果△x&lt;ε ,终止循环，输出x₁。<br>
-＃解决实例的Python代码<br>
-import numpy as np<br>
-inport matplotlib as mpl<br>
-import matplotlib.pyplot as plt</p>
-<p>mpl.rcParams['font.family'] = 'sans-serif'<br>
-mpl.rcParams['font.sans-serif'] = 'SimHei'<br>
-mpl.rcParams['axes.unicode_minus'] = false</p>
-<p>#构建一维元素图形<br>
-def f1(x):<br>
-　　return 0.5 * (x ** 2) - 2x<br>
-def h1(x):<br>
-　　return x-2</p>
-<p>#使用梯度下降法<br>
-GD_X = []<br>
-GD_Y = []<br>
-x = -4<br>
-alpha = 0.9<br>
-f_change = np.abs(alpha * hl(x))<br>
-f_current = f_change<br>
-GD_X.append(x)<br>
-GD_Y.append(f_current)</p>
-<p>#迭代次数<br>
-iter_num = 0<br>
-while f_change &gt;0.01 and iter_num&lt;10:<br>
-　　iter_num+=1<br>
-　　x = x - x - alpha * h1(x)<br>
-　　tem = f1(x)<br>
-　　f_change = np.abs(alpha * hl(x))<br>
-　　f_current = tmp<br>
-　　GD_X.append(f_current)</p>
-<p>print(u'最终的结果：(%.5f,%.5f)'%(x,f_current))<br>
-pirnt(u'迭代次数：%d'%iter_num)<br>
-printf(GD_X)</p>
+　　　　　　 3.将△x与ε 进行比较，△x =0.0054  &gt; ε = 0.01；如果△x&lt;ε ,终止循环，输出x₁。</p>
+<pre><code>＃解决实例的Python代码
+import numpy as np
+inport matplotlib as mpl
+import matplotlib.pyplot as plt
+
+mpl.rcParams['font.family'] = 'sans-serif'
+mpl.rcParams['font.sans-serif'] = 'SimHei'
+mpl.rcParams['axes.unicode_minus'] = false
+
+#构建一维元素图形
+def f1(x):
+　　return 0.5 * (x ** 2) - 2x
+def h1(x):
+　　return x-2
+
+#使用梯度下降法
+GD_X = []
+GD_Y = []
+x = -4
+alpha = 0.9
+f_change = np.abs(alpha * hl(x))
+f_current = f_change
+GD_X.append(x)
+GD_Y.append(f_current)
+
+#迭代次数
+iter_num = 0
+while f_change &gt;0.01 and iter_num&lt;10:
+　　iter_num+=1
+　　x = x - x - alpha * h1(x)
+　　tem = f1(x)
+　　f_change = np.abs(alpha * hl(x))
+　　f_current = tmp
+　　GD_X.append(f_current)
+
+print(u'最终的结果：(%.5f,%.5f)'%(x,f_current))
+pirnt(u'迭代次数：%d'%iter_num)
+printf(GD_X)
+</code></pre>
 ]]></content>
     </entry>
     <entry>
