@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-05-23T09:59:26.539Z</updated>
+    <updated>2020-07-10T13:31:10.077Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -11,89 +11,19 @@
     <icon>https://zhangman123456.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 张曼</rights>
     <entry>
-        <title type="html"><![CDATA[梯度下降法]]></title>
+        <title type="html"><![CDATA[梯度下降法（二）]]></title>
         <id>https://zhangman123456.github.io/post/ti-du-xia-jiang-fa/</id>
         <link href="https://zhangman123456.github.io/post/ti-du-xia-jiang-fa/">
         </link>
-        <updated>2020-05-21T13:35:16.000Z</updated>
-        <content type="html"><![CDATA[<p>#基本思想：<br>
-　　假设我们爬山，如果想最快的上到山顶，那么我们应该从山势最陡的地方上山。也就是山势变化最快的地方上山<br>
-　　同样，如果从任意一点出发，需要最快搜索到函数最大值，那么我们也应该从函数变化最快的方向搜索。函数变化最快的方向是什么呢？函数的<em>梯度</em>。<br>
-　　如果函数为一元函数，梯度就是该函数的导数 <img src="https://zhangman123456.github.io/post-images/1590077120801.png" alt="" loading="lazy"><br>
-　　如果为二元函数，梯度定义为：<img src="https://zhangman123456.github.io/post-images/1590077189972.png" alt="" loading="lazy">　<br>
-　　如果需要找的是函数极小点，那么应该从负梯度的方向寻找，该方法称之为<strong>梯度下降法</strong>。如下图：<br>
-<img src="https://zhangman123456.github.io/post-images/1590077297157.png" alt="" loading="lazy"><br>
-　　函数值减小的方向称为负梯度。<br>
-　　要搜索极小值C点，在A点必须向x增加方向搜索，此时与A点梯度方向相反；在B点必须向x减小方向搜索，此时与B点梯度方向相反。总之，搜索极小值，必须向负梯度方向搜索。<br>
-#步骤：<br>
-　　假设函数   y= f(x₁，x₂……xn) 只有一个极小点。初始给定参数为  X = (x10，x20，……xn0)。从这个点如何搜索才能找到原函数的极小值点？<br>
-　　1.首先设定一个较小的正数η，ε;<br>
-　　2. 求当前位置处的各个偏导数：<img src="https://zhangman123456.github.io/post-images/1590077961405.png" alt="" loading="lazy"><br>
-　　3. 修改当前函数的参数值，公式如下：<img src="https://zhangman123456.github.io/post-images/1590077999929.png" alt="" loading="lazy"><br>
-　　4. 如果参数变化量小于ε，退出；否则返回2。<br>
-#实例：（该实例来自wls的课件，我自己修改成了我更容易理解的方式）<br>
-实例：利用梯度下降法求函数    y=x2/2-2x   的极小值。<br>
-首先 1. 任意给一个初始出发点，设为 x₁=-4；设参数变化量为△x。<br>
-　　２. 给定任意两个较小的参数：η = 0.9，ε = 0.01<br>
-　　３.   计算导数：f'(x) ＝ dy/dx = x - 2<br>
-　　 注：如果△x&lt;ε ,终止循环，输出x₁；<br>
-　　　　 如果△x&gt;ε，继续循环。<br>
-　　(这些是准备工作)<br>
-第一轮循环：1. 计算当前导数值：f'(x₁) = -4 - 2 = -6；<br>
-　　　　　　２.修改当前参数值：x₁ = x₁ - η*f'(x₁) = -4 - 0.9* (-6) = 1.4；<br>
-　　　　　　　　　　　　　　　△x = -0.9*(-6) = 5.4；<br>
-　　　　　　３. 将△x与ε 进行比较，△x = 5.4 &gt; ε = 0.01；△x&gt;ε，继续循环。<br>
-第二轮循环：1.更新当前导数值：f'(x₁) = 1.4 - 2 = -0.6;<br>
-　　　　　　2.修改当前参数值：x₁ = x₁ - η*f'(x₁) = 1.4 - 0.9*(-0.6) = 1.94；<br>
-　　　　　　　　　　　　　　   △x = -0.9*(- 0.6) = 0.54；<br>
-　　　　　　3.将△x与ε 进行比较，△x =0.54  &gt; ε = 0.01；△x&gt;ε，继续循环。<br>
-第三轮循环：1.更新当前导数值：f'(x₁) = 1.94 - 2 = -0.06；<br>
-　　　　　　2.修改当前参数值：x₁ = x₁ - η*f'(x₁) = 1.94 - 0.9*(-0.06) = 1.994;<br>
-　　　　　　　　　　　　　　  △x = -0.9*(-0.06) = 0.054；<br>
-　　　　　　3.将△x与ε 进行比较，△x =0.０54  &gt; ε = 0.01；△x&gt;ε，继续循环。　　　　<br>
-第四轮循环：１.更新当前导数值：f'(x₁) = 1.994 - 2 = 0.006；<br>
-　　　　　　 2.修改当前参数值：x₁ = x₁ - η*f'(x₁) = 1.994 - 0.9*(-0.006) = 1.9994;　　　　　　　　　　　<br>
-　　　　　　　　　　　　　　　△x = -0.9*(0.006) = 0.0054；<br>
-　　　　　　 3.将△x与ε 进行比较，△x =0.0054  &gt; ε = 0.01；如果△x&lt;ε ,终止循环，输出x₁。</p>
-<pre><code>＃解决实例的Python代码
-import numpy as np
-inport matplotlib as mpl
-import matplotlib.pyplot as plt
-
-mpl.rcParams['font.family'] = 'sans-serif'
-mpl.rcParams['font.sans-serif'] = 'SimHei'
-mpl.rcParams['axes.unicode_minus'] = false
-
-#构建一维元素图形
-def f1(x):
-　　return 0.5 * (x ** 2) - 2x
-def h1(x):
-　　return x-2
-
-#使用梯度下降法
-GD_X = []
-GD_Y = []
-x = -4
-alpha = 0.9
-f_change = np.abs(alpha * hl(x))
-f_current = f_change
-GD_X.append(x)
-GD_Y.append(f_current)
-
-#迭代次数
-iter_num = 0
-while f_change &gt;0.01 and iter_num&lt;10:
-　　iter_num+=1
-　　x = x - x - alpha * h1(x)
-　　tem = f1(x)
-　　f_change = np.abs(alpha * hl(x))
-　　f_current = tmp
-　　GD_X.append(f_current)
-
-print(u'最终的结果：(%.5f,%.5f)'%(x,f_current))
-pirnt(u'迭代次数：%d'%iter_num)
-printf(GD_X)
-</code></pre>
+        <updated>2020-07-10T11:20:06.000Z</updated>
+        <content type="html"><![CDATA[<p>学习了梯度下降之后，我们引入新的概念：<strong>损失函数</strong>。便于我们直接利用梯度下降法计算损失函数的最小值。<br>
+我们可以近似地将<strong>损失函数</strong>理解为方差或者平方差。根据给出的一系类数据我们可以得出相关的函数，再根据该函数和不同变量，我们可以得出不同变量对应的不同的函数值。而每个函数值和每个真实的数值之间有一定的误差，根据这些误差我们可以得到相关的函数，即<strong>损失函数</strong>。<strong>损失函数</strong>的值越小，我们之前得到的函数就越精确。<br>
+例：根据某组数据得到预测的函数：h(x) = θ₁ + θ₂x。只含有一个特征/输入变量。在这个式子中θ₁，θ₂都是未知参数，x是已知数据。我们的目的是得到合适的参数使得我们的预测尽可能准确。这时就需要引入损失函数的概念。<br>
+<img src="https://zhangman123456.github.io/post-images/1594383086368.jpg" alt="" loading="lazy">（暂时不用管1/2)<br>
+即，J(θ₁,θ₂)为一个关于θ₁和θ₂的二元函数。在三维空间坐标系内，存在一对点（θ₁,θ₂）使得J(θ₁,θ₂)有最小值<br>
+初始选取的一对点（θ₁,θ₂）为随机选取。<br>
+超参数<br>
+随机 批量 小批量</p>
 ]]></content>
     </entry>
     <entry>
