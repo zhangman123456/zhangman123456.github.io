@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-07-10T13:31:10.077Z</updated>
+    <updated>2020-07-10T13:47:04.195Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -24,15 +24,6 @@
 初始选取的一对点（θ₁,θ₂）为随机选取。<br>
 超参数<br>
 随机 批量 小批量</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[我的博客]]></title>
-        <id>https://zhangman123456.github.io/post/wo-de-bo-ke/</id>
-        <link href="https://zhangman123456.github.io/post/wo-de-bo-ke/">
-        </link>
-        <updated>2020-05-19T14:53:58.000Z</updated>
-        <content type="html"><![CDATA[<p>我的博客</p>
 ]]></content>
     </entry>
     <entry>
