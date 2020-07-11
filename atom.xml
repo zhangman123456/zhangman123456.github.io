@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-07-11T05:21:51.886Z</updated>
+    <updated>2020-07-11T06:04:43.311Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -122,22 +122,6 @@ printf(GD_X)
 3.小批量梯度下降算法(MBGD),计算包含n个样本的mini-batch的梯度：<img src="https://i.loli.net/2019/08/12/ItgcSRaT4jreKMl.png" alt="" loading="lazy">MBGD是训练神经网络最常用的优化方法。<br>
 优点：<br>
 参数更新时的动荡变小，收敛过程更稳定，降低收敛难度；可以利用现有的线性代数库高效的计算多个样本的梯度。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[梯度下降法（二）]]></title>
-        <id>https://zhangman123456.github.io/post/ti-du-xia-jiang-fa/</id>
-        <link href="https://zhangman123456.github.io/post/ti-du-xia-jiang-fa/">
-        </link>
-        <updated>2020-07-10T11:20:06.000Z</updated>
-        <content type="html"><![CDATA[<p>学习了梯度下降之后，我们引入新的概念：<strong>损失函数</strong>。便于我们直接利用梯度下降法计算损失函数的最小值。<br>
-我们可以近似地将<strong>损失函数</strong>理解为方差或者平方差。根据给出的一系类数据我们可以得出相关的函数，再根据该函数和不同变量，我们可以得出不同变量对应的不同的函数值。而每个函数值和每个真实的数值之间有一定的误差，根据这些误差我们可以得到相关的函数，即<strong>损失函数</strong>。<strong>损失函数</strong>的值越小，我们之前得到的函数就越精确。<br>
-例：根据某组数据得到预测的函数：h(x) = θ₁ + θ₂x。只含有一个特征/输入变量。在这个式子中θ₁，θ₂都是未知参数，x是已知数据。我们的目的是得到合适的参数使得我们的预测尽可能准确。这时就需要引入损失函数的概念。<br>
-<img src="https://zhangman123456.github.io/post-images/1594383086368.jpg" alt="" loading="lazy">（暂时不用管1/2)<br>
-即，J(θ₁,θ₂)为一个关于θ₁和θ₂的二元函数。在三维空间坐标系内，存在一对点（θ₁,θ₂）使得J(θ₁,θ₂)有最小值<br>
-初始选取的一对点（θ₁,θ₂）为随机选取。<br>
-超参数<br>
-随机 批量 小批量</p>
 ]]></content>
     </entry>
     <entry>
