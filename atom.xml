@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-07-11T08:49:57.483Z</updated>
+    <updated>2020-07-13T01:40:06.999Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -108,7 +108,9 @@ printf(GD_X)
 <img src="https://zhangman123456.github.io/post-images/1594383086368.jpg" alt="" loading="lazy"><em>(暂时不用管1/2)</em><br>
 上图中的J(θ₁,θ₂)是一个关于θ₁和θ₂的二元函数，也就是<strong>损失函数</strong>。在三维空间坐标系内，存在一对点（θ₁,θ₂）使得J(θ₁,θ₂)有最小值<br>
 然后对损失函数进行一个简单的推导（利用梯度下降的算法）<br>
-<img src="https://zhangman123456.github.io/post-images/1594444209052.jpg" alt="" loading="lazy"><br>
+<img src="https://zhangman123456.github.io/post-images/1594444209052.jpg" alt="" loading="lazy">（在这个公式里突然多了一个α，它表示的是学习率，用来限定步长的大小，也很容易理解，毕竟得到的偏导是类似斜率的东西，只是一个方向，总得加个数值，才能表示向这个方向移动的距离。<br>
+对于的取值，一般都取的比较小，但也不要太小，太小就意味着迭代步数要增加，运算时间边长。另外，迭代的步数要自己设置。<br>
+原文链接：https://blog.csdn.net/i96jie/java/article/details/81206473）<br>
 #梯度下降法的三个变种<br>
 了解了梯度下降法的核心思想以及损失函数后，我们接着了解梯度下降法的三个变种<br>
 1.批量梯度下降法（BGD）<br>
