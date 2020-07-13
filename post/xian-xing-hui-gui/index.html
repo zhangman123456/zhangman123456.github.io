@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>线性回归 | 张曼</title>
-<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1594604462043">
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1594604747046">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="线性回归 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
@@ -24,7 +24,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://zhangman123456.github.io">
-  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1594604462043" alt="">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1594604747046" alt="">
   </a>
   <h1 class="site-title">
     张曼
@@ -110,7 +110,8 @@
 5.接下来，利用梯度下降的方法。这里我们可以分别使用批量梯度下降和随机梯度下降的方法来实现**（有助于更加具体地理解这两种梯度下降的算法）**<br>
 （1）批量梯度下降算法<img src="https://zhangman123456.github.io/post-images/1594577818861.png" alt="" loading="lazy"><u>（上标i代表具体的某一个数据；x<sub>j</sub>代表系数θ<sub>j</sub>对应的因变量）</u><br>
   每一次的迭代，都把从θ<sub>0</sub> 到 θ<sub>j</sub>的每一个参数进行迭代；而每一次对每一个参数进行迭代时，都需要把全部的样本都使用一遍，这样重复迭代直到θ<sub>j</sub>收敛为止。所以说该算法的复杂度是O(i（j+1）)<br>
-  <u>(https://zhangman123456.github.io/post-images/1594579705255.jpg)<br>
+（为了防止我忘了，我写了一个一看就懂的版本）<br>
+  <img src="https://zhangman123456.github.io/post-images/1594579705255.jpg" alt="" loading="lazy"><br>
 （2）随机梯度下降法<img src="https://zhangman123456.github.io/post-images/1594579776426.png" alt="" loading="lazy"><br>
   每一次的迭代，都把从θ<sub>0</sub> 到 θ<sub>j</sub>的每一个参数进行迭代；而每一次对每一个参数进行迭代时，只使用所有样本中的一个数据，一旦到达最大的迭代次数或是满足预期的精度，就停止。这样算法的复杂度为O(j+1)，就下降了很多。<br>
   <u>（还是一个一看就会的版本）</u><img src="https://zhangman123456.github.io/post-images/1594580748171.jpg" alt="" loading="lazy"></p>
