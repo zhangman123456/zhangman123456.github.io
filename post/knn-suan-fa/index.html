@@ -1,0 +1,286 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KNN算法 | 张曼</title>
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1595169740463">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="KNN算法 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="#算法简述
+邻近算法，或者说K最近邻（KNN，K-NearestNeighbor）分类算法是数据挖掘分类技术中最简单的方法之一。所谓K最近邻，就是K个最近的邻居的意思，说的是每个样本都可以用它最接近的K个邻近值来代表。近邻算法就是将数据集合..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zhangman123456.github.io">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1595169740463" alt="">
+  </a>
+  <h1 class="site-title">
+    张曼
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              KNN算法
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-07-16
+              </span>
+              <span>
+                8 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>#算法简述<br>
+邻近算法，或者说K最近邻（KNN，K-NearestNeighbor）分类算法是数据挖掘分类技术中最简单的方法之一。所谓K最近邻，就是K个最近的邻居的意思，说的是每个样本都可以用它最接近的K个邻近值来代表。近邻算法就是将数据集合中每一个记录进行分类的方法。<br>
+我们可以通过几幅图来形象地了解KNN算法<img src="https://zhangman123456.github.io/post-images/1594891375739.png" alt="" loading="lazy">毫无疑问，k值的选定对于分类的效果至关重要。如果K值过小，拟合的效果不好；如果K值过大，就会覆盖过多的样本数据，失去拟合的意义。<br>
+要度量空间中点距离的话，有好几种度量方式，比如常见的曼哈顿距离计算，欧式距离（或欧几里得距离）等等。不过通常KNN算法中使用的是欧式距离，这里只是简单说一下，拿二维平面为例，，二维空间两个点的欧式距离计算公式如下：<img src="https://zhangman123456.github.io/post-images/1594891829868.jpg" alt="" loading="lazy">这样一来，不难得出，KNN算法最简单粗暴的方式就是计算预测点和所有样本点之间的距离，选出前K个距离最小的点看看哪个种类的点的数量最多。<br>
+<strong>三.KNN特点</strong><br>
+KNN是一种<strong>非参</strong>的，<strong>惰性</strong>的算法模型。什么是非参，什么是惰性呢？<br>
+<strong>非参</strong>的意思并不是说这个算法不需要参数，而是意味着这个模型不会对数据做出任何的假设，与之相对的是线性回归（我们总会假设线性回归是一条直线）。也就是说KNN建立的模型结构是根据数据来决定的，这也比较符合现实的情况，毕竟在现实中的情况往往与理论上的假设是不相符的。</p>
+<p><strong>惰性</strong>又是什么意思呢？想想看，同样是分类算法，逻辑回归需要先对数据进行大量训练（tranning），最后才会得到一个算法模型。而KNN算法却不需要，它没有明确的训练数据的过程，或者说这个过程很快。</p>
+<p><strong>KNN算法的优势和劣势</strong><br>
+了解KNN算法的优势和劣势，可以帮助我们在选择学习算法的时候做出更加明智的决定。那我们就来看看KNN算法都有哪些优势以及其缺陷所在！<br>
+<strong>KNN算法优点</strong><br>
+简单易用，相比其他算法，KNN算是比较简洁明了的算法。即使没有很高的数学基础也能搞清楚它的原理。<br>
+模型训练时间快，上面说到KNN算法是惰性的，这里也就不再过多讲述。<br>
+预测效果好。<br>
+对异常值不敏感<br>
+<strong>KNN算法缺点</strong><br>
+对内存要求较高，因为该算法存储了所有训练数据<br>
+预测阶段可能很慢<br>
+对不相关的功能和数据规模敏感</p>
+<p>KNN 算法本身简单有效，它是一种 lazy-learning 算法，分类器不需要使用训练集进行训练，训练时间复杂度为0。KNN 分类的计算复杂度和训练集中的文档数目成正比，也就是说，如果训练集中文档总数为 n，那么 KNN 的分类时间复杂度为O(n)。因此，基于python已经有很多成熟的可以直接使用的库来进行算法的实现<br>
+KNN算法的简单实现：（调用sklearn自带的库）</p>
+<pre><code>from sklearn import neighbors #sklearn中的函数集
+from sklearn import datasets  #sklearn中的数据集
+
+knn = neighbors.KNeighborsClassifier() # 申明对象
+iris = datasets.load_iris()  # 导入数据（一个数据集，很大的数据集）
+print(iris)
+
+knn.fit(iris.data,iris.target) # 生成KNN模型，fit()函数可以理解为一个训练的过程
+
+predicit_label = knn.predict([[0.2,0.3,0.3,0.2]]) # 预测这个数组的概率
+print(predicit_label)
+</code></pre>
+<p>KNN算法的具体实现：<br>
+（也是copy别人的代码，自己加的注释）</p>
+<pre><code>'''
+导入数据
+filename数据存储路径
+radio，按指定比例将数据划分为训练集和测试集
+trainSet：训练数据
+testSet：测试数据
+'''
+def loadDateset(filename,radio,trainSet=[],testSet=[]):
+    with open(filename,'rt') as csvfile:   #打开filename；csvfile是一种文件格式
+        lines = csv.reader(csvfile)   # 逐行读取数据
+        dataset = list(lines)        # 将文件中的样本数据转换为列表类型存储
+        for x in range(len(dataset)-1):  # 循环每行数据，将前4个特征值存入数组
+            for y in range(4):
+                dataset[x][y] = float(dataset[x][y])#也就是将前四列更新成浮点数
+            if random.random()&lt;radio:    # 根据radio的大小将样本数据集划分为训练数据和测试数据
+                trainSet.append(dataset[x])
+            else:
+                testSet.append(dataset[x])
+'''
+计算2个样例之间的距离（欧氏距离），length表示数据的维度
+'''
+def evaluateDistance(instance1,instance2,length):#变量为两个样例，还有维度
+    distance = 0#初始化距离
+    for x in range(length): # 循环每一维度，数值相减并对其平方，然后进行累加
+        distance += pow((instance1[x]-instance2[x]),2)
+    return math.sqrt(distance) # 开方求距离
+
+'''
+对于一个实例，找到离他最近的k个实例
+'''
+def getNeighbors(trainSet,testInstance,k):
+    distance = []
+    length = len(testInstance)-1 # 每个测试实例的维度（比如（2,3,4）就是三个维度）
+    for x in range(len(trainSet)-1): 
+        dist = evaluateDistance(testInstance,trainSet[x],length)# 分别计算一个测试实例到每一个训练数据的距离
+        distance.append((trainSet[x],dist)) # 将每一个训练实例和其对应到测试实例的距离存储到列表（append（）函数用于在列表末尾增添新的对象）
+    distance.sort(key=operator.itemgetter(1)) #进行排序，而排序的关键是元素第二维数据的大小，也就是dist
+    neighbors = [] # 用来存储离一个实例最近的几个测试数据
+    for x in range(k): # 取distance中前k个实例存储到neighbors
+        neighbors.append(distance[x][0])#已经经过排序的distance列表，取出前k个元素，就是一个测试实例的k个近邻
+        return neighbors
+
+'''
+在最近的K个实例中投票，少数服从多数，把要预测的实例归到多数那一类
+'''
+def getResponse(neighbors):#neighbors作为变量
+    classvotes = {} # 定义一个字典，存储每一类别的数目
+    for x in range(len(neighbors)):#遍历每一个k近邻的距离值大小
+        response = neighbors[x][-1]#表示第x行最后一列的元素
+        if response in classvotes:
+            classvotes[response] += 1
+        else:
+            classvotes[response] = 1
+    sortedVotes = sorted(classvotes.items(),key=operator.itemgetter(1),reverse=True) # 排序，输出数目最大的类别
+    return sortedVotes[0][0]
+
+'''
+计算测试集的准确率
+'''
+def getAccuracy(testSet,predictions):
+    correct = 0
+    for x in range(len(testSet)):
+        if testSet[x][-1] == predictions[x]: # 每行测试用例最后一列的标签与预测标签是否相等
+            correct += 1
+    return (correct/float(len(testSet)))*100.0
+
+def main():
+    trainSet = [] # 存储训练集
+    testSet = []  # 存储测试集
+    radio = 0.80  # 按4：1划分
+    loadDateset('G:/PycharmProjects/Machine_Learning/KNN/irisdata.txt',radio,trainSet,testSet) #导入数据并划分
+    print(&quot;trainSetNum: &quot;+ str(len(trainSet)))
+    print(&quot;testSetNum: &quot;+  str(len(testSet)))
+    predictions = []
+    k = 3 # 选取前k个最近的实例
+    for x in range(len(testSet)): # 循环预测测试集合的每个实例
+        neighbors = getNeighbors(trainSet,testSet[x],k)
+        result = getResponse(neighbors)
+        predictions.append(result)
+        print('&gt;predicted=' + repr(result) + ', actual=' + repr(testSet[x][-1]))
+    accuracy = getAccuracy(testSet,predictions)
+    print('Accuracy: ' + repr(accuracy) + '%')
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zhangman123456.github.io/post/xian-xing-hui-gui-zuo-ye/">
+              <h3 class="post-title">
+                线性回归作业
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zhangman123456.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

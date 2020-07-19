@@ -993,14 +993,20 @@ td {
       }
     
       .main {
-        background: #e5dbff;
+        background: #fff0f6;
       }
     
       body {
-        background: #a5d8ff;
+        background: #edf2ff;
       }
     
       a {
-        color: #40c057;
+        color: #212529;
       }
+    
+      a:hover {
+        color: #212529;
+      }
+    
+      听
     
