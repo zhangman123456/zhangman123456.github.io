@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-07-23T02:19:39.104Z</updated>
+    <updated>2020-07-23T12:55:53.643Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -102,11 +102,19 @@ def kMeans(dataSet,k,distMeas=distEclud,createCent=randCent):
         <link href="https://zhangman123456.github.io/post/knn-suan-fa/">
         </link>
         <updated>2020-07-16T08:45:34.000Z</updated>
-        <content type="html"><![CDATA[<p>#算法简述<br>
-邻近算法，或者说K最近邻（KNN，K-NearestNeighbor）分类算法是数据挖掘分类技术中最简单的方法之一。所谓K最近邻，就是K个最近的邻居的意思，说的是每个样本都可以用它最接近的K个邻近值来代表。近邻算法就是将数据集合中每一个记录进行分类的方法。<br>
-我们可以通过几幅图来形象地了解KNN算法<img src="https://zhangman123456.github.io/post-images/1594891375739.png" alt="" loading="lazy">毫无疑问，k值的选定对于分类的效果至关重要。如果K值过小，拟合的效果不好；如果K值过大，就会覆盖过多的样本数据，失去拟合的意义。<br>
-要度量空间中点距离的话，有好几种度量方式，比如常见的曼哈顿距离计算，欧式距离（或欧几里得距离）等等。不过通常KNN算法中使用的是欧式距离，这里只是简单说一下，拿二维平面为例，，二维空间两个点的欧式距离计算公式如下：<img src="https://zhangman123456.github.io/post-images/1594891829868.jpg" alt="" loading="lazy">这样一来，不难得出，KNN算法最简单粗暴的方式就是计算预测点和所有样本点之间的距离，选出前K个距离最小的点看看哪个种类的点的数量最多。<br>
-<strong>三.KNN特点</strong><br>
+        <content type="html"><![CDATA[<p><strong>１.算法简述</strong><br>
+　　邻近算法，或者说K最近邻（KNN，K-NearestNeighbor）分类算法是数据挖掘分类技术中最简单的方法之一。所谓K最近邻，就是K个最近的邻居的意思，说的是每个样本都可以用它最接近的K个邻近值来代表。近邻算法就是将数据集合中每一个记录进行分类的方法。<br>
+<strong>２.算法详述</strong><br>
+我们可以通过几幅图来形象地了解KNN算法<img src="https://zhangman123456.github.io/post-images/1594891375739.png" alt="" loading="lazy">　　毫无疑问，k值的选定对于分类的效果至关重要。如果K值过小，拟合的效果不好；如果K值过大，就会覆盖过多的样本数据，失去拟合的意义。<br>
+　　要度量空间中点距离的话，有好几种度量方式，比如常见的曼哈顿距离计算，欧式距离（或欧几里得距离）等等。不过通常KNN算法中使用的是欧式距离，这里只是简单说一下，拿二维平面为例，，二维空间两个点的欧式距离计算公式如下：<img src="https://zhangman123456.github.io/post-images/1594891829868.jpg" alt="" loading="lazy">　　这样一来，不难得出，KNN算法最简单粗暴的方式就是计算预测点和所有样本点之间的距离，选出前K个距离最小的点看看哪个种类的点的数量最多。<br>
+<strong>3.具体步骤</strong><br>
+1.计算所有测试数据到一个训练数据之间的距离<br>
+2.将这些距离按照从小到大的顺序储存起来<br>
+3.取出最小的前k个点，<br>
+4.确定这k个点出现的类别的频率<br>
+5.返回前K个点中出现频率最高的类别作为测试数据的预测分类。<br>
+6.重复步骤1-5<br>
+<strong>4.KNN特点</strong><br>
 KNN是一种<strong>非参</strong>的，<strong>惰性</strong>的算法模型。什么是非参，什么是惰性呢？<br>
 <strong>非参</strong>的意思并不是说这个算法不需要参数，而是意味着这个模型不会对数据做出任何的假设，与之相对的是线性回归（我们总会假设线性回归是一条直线）。也就是说KNN建立的模型结构是根据数据来决定的，这也比较符合现实的情况，毕竟在现实中的情况往往与理论上的假设是不相符的。</p>
 <p><strong>惰性</strong>又是什么意思呢？想想看，同样是分类算法，逻辑回归需要先对数据进行大量训练（tranning），最后才会得到一个算法模型。而KNN算法却不需要，它没有明确的训练数据的过程，或者说这个过程很快。</p>
