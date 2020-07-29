@@ -1,0 +1,271 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>矩阵分解 | 张曼</title>
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1596027508069">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="矩阵分解 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="矩阵分解的概念
+　　矩阵分解是指将一个矩阵分解成两个或者多个矩阵的乘积。譬如，一个N行M列的矩阵可以被分解为一个N行K列的矩阵和一个K行M列的矩阵的乘积（注意乘积顺序不能颠倒）。K可以理解为一个参数，这个参数会对这两个矩阵乘积产生的矩阵大小..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zhangman123456.github.io">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1596027508069" alt="">
+  </a>
+  <h1 class="site-title">
+    张曼
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              矩阵分解
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-07-29
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p><strong>矩阵分解的概念</strong><br>
+　　矩阵分解是指将一个矩阵分解成两个或者多个矩阵的乘积。譬如，一个N行M列的矩阵可以被分解为一个N行K列的矩阵和一个K行M列的矩阵的乘积（注意乘积顺序不能颠倒）。K可以理解为一个参数，这个参数会对这两个矩阵乘积产生的矩阵大小产生影响，但是不会影响乘积得到的矩阵的行数和列数。可以利用矩阵分解来解决很多实际生活中的问题。<br>
+<strong>例：</strong><br>
+看图中的这个例子：<img src="https://zhangman123456.github.io/post-images/1596021541880.png" alt="" loading="lazy">　　矩阵中，描述了5个用户(U1,U2,U3,U4 ,U5)对4个物品(D1,D2,D3,D4)的评分(1-5分)，- 表示没有评分，我们的目的是把没有评分的给预测出来，然后按预测的分数高低，给用户进行物品推荐。<br>
+　　将图中的数据看作是一个维度为N×Ｍ的评分矩阵R，则R可以看做两个矩阵P(N×Ｋ)和Ｑ(Ｋ×Ｍ)的乘积。对于P,Q矩阵的解释，直观上，P矩阵是N个用户对K个主题的关系，Q矩阵是K个主题跟M个物品的关系，或者说，N个用户通过K个主题对M个物品进行评分，那么我们在模拟时，也要通过这K个主题进行模拟。至于K个主题具体是什么，在算法里面K是一个参数，需要调节的，通常10~100之间。<br>
+具体步骤：<br>
+　　矩阵的分解（R是真实的评分矩阵，R^是我们预测得到的矩阵。R与R^越接近，就证明我们取得两个矩阵P和Q的预测模型越好。N和M是确定的参数值不会改变，因此K的取值对整个模型的预测结果起着至关重要的作用)<img src="https://zhangman123456.github.io/post-images/1595990213069.jpg" alt="" loading="lazy"><br>
+<strong>代码实现</strong></p>
+<pre><code>import numpy as np  
+import matplotlib.pyplot as plt
+ 
+ 
+def matrix(R, P, Q, K, alpha, beta):
+    result=[]
+    steps = 1
+    while 1 :
+    #使用梯度下降的一步步的更新P,Q矩阵直至得到最终收敛值
+        steps = steps + 1    
+        eR = np.dot(P,Q)
+        e=0
+        for i in range(len(R)):
+            for j in range(len(R[i])):
+                if R[i][j]&gt;0:
+                    # .dot(P,Q) 表示矩阵内积,即Pik和Qkj k由1到k的和eij为真实值和预测值的之间的误差,
+                    eij=R[i][j]-np.dot(P[i,:],Q[:,j]) 
+                    #求误差函数值，我们在下面更新p和q矩阵的时候我们使用的是化简得到的最简式，较为简便，
+                    #但下面我们仍久求误差函数值这里e求的是每次迭代的误差函数值，用于绘制误差函数变化图
+                    e=e+pow(R[i][j] - np.dot(P[i,:],Q[:,j]),2) 
+                    for k in range(K):
+                        #在上面的误差函数中加入正则化项防止过拟合
+                        e=e+(beta/2)*(pow(P[i][k],2)+pow(Q[k][j],2))
+                        
+                    for k in range(K):
+                        #在更新p,q时我们使用化简得到了最简公式
+                        P[i][k]=P[i][k]+alpha*(2*eij*Q[k][j]-beta*P[i][k])
+                        Q[k][j]=Q[k][j]+alpha*(2*eij*P[i][k]-beta*Q[k][j])
+        #print('迭代轮次:', steps, '   e:', e)
+        result.append(e)#将每一轮更新的损失函数值添加到数组result末尾
+        
+        #当损失函数小于一定值时，迭代结束
+        if eij&lt;0.00001:
+            break
+    return P,Q,result
+   
+R=[
+   [5,3,0,1],
+   [4,0,0,1],
+   [1,1,0,5],
+   [1,0,0,4],
+   [0,1,5,4],
+   ]
+ 
+R=np.array(R)
+    
+alpha = 0.0001 #学习率
+beta = 0.002 
+ 
+N = len(R) #表示行数
+M = len(R[0]) #表示列数
+K = 3 #3个因子
+ 
+p = np.random.rand(N, K) #随机生成一个 N行 K列的矩阵
+q = np.random.rand(K, M) #随机生成一个 M行 K列的矩阵
+ 
+P, Q, result=matrix(R, p, q, K,  alpha, beta)
+print(&quot;矩阵R为：\n&quot;,R)
+print(&quot;矩阵P为：\n&quot;,P)
+print(&quot;矩阵Q为：\n&quot;,Q)
+MF = np.dot(P,Q)
+print(&quot;预测矩阵：\n&quot;,MF)
+print()
+#下面代码可以绘制损失函数的收敛曲线图
+print(&quot;损失函数的收敛过程为：&quot;)
+n=len(result)
+x=range(n)
+plt.plot(x, result,color='b',linewidth=3)
+plt.xlabel(&quot;generation&quot;)
+plt.ylabel(&quot;loss&quot;)
+plt.show()
+</code></pre>
+<p>下面是运行的结果：</p>
+<pre><code>矩阵R为：
+ [[5 3 0 1]
+ [4 0 0 1]
+ [1 1 0 5]
+ [1 0 0 4]
+ [0 1 5 4]]
+矩阵P为：
+ [[0.11646557 2.20824426 0.88565195]
+ [0.03596535 1.51168656 1.0372382 ]
+ [1.6897674  0.11533018 1.13699815]
+ [1.37709179 0.16820378 0.84690913]
+ [1.50038103 1.43928107 0.61271558]]
+矩阵Q为：
+ [[-0.09628733 -0.1151309   1.07555694  2.32234973]
+ [ 1.97215153  0.90817549  1.96709116 -0.04825554]
+ [ 0.89544739  0.69563508  0.70044543  0.95484359]]
+预测矩阵：
+ [[5.13683287 2.60815509 5.08943398 1.00957287]
+ [3.90660419 2.09027523 3.73883681 1.00097713]
+ [1.08286742 0.7011314  2.8407112  5.00432095]
+ [0.95748942 0.58335244 2.40522644 3.99863775]
+ [3.24266723 1.56060602 4.87411612 4.00000375]]
+
+损失函数的收敛过程为：![](https://zhangman123456.github.io/post-images/1596027375419.PNG)
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zhangman123456.github.io/post/tui-jian-xi-tong-zhi-xie-tong-guo-lu-suan-fa/">
+              <h3 class="post-title">
+                推荐系统之协同过滤算法
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zhangman123456.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

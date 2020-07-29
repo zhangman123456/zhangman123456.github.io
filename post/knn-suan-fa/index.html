@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KNN算法 | 张曼</title>
-<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1595559341825">
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1596027508069">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="KNN算法 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
@@ -22,7 +22,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://zhangman123456.github.io">
-  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1595559341825" alt="">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1596027508069" alt="">
   </a>
   <h1 class="site-title">
     张曼
@@ -90,7 +90,7 @@
             <div class="post-content-wrapper">
               <div class="post-content">
                 <p><strong>１.算法简述</strong><br>
-　　邻近算法，或者说K最近邻（KNN，K-NearestNeighbor）分类算法是数据挖掘分类技术中最简单的方法之一。所谓K最近邻，就是K个最近的邻居的意思，说的是每个样本都可以用它最接近的K个邻近值来代表。近邻算法就是将数据集合中每一个记录进行分类的方法。<br>
+　　邻近算法，或者说K最近邻（KNN，K-NearestNeighbor）<u>分类算法</u>是数据挖掘分类技术中最简单的方法之一。所谓K最近邻，就是K个最近的邻居的意思，说的是每个样本都可以用它最接近的K个邻近值来代表。近邻算法就是将数据集合中每一个记录进行分类的方法。<br>
 <strong>２.算法详述</strong><br>
 我们可以通过几幅图来形象地了解KNN算法<img src="https://zhangman123456.github.io/post-images/1594891375739.png" alt="" loading="lazy">　　毫无疑问，k值的选定对于分类的效果至关重要。如果K值过小，拟合的效果不好；如果K值过大，就会覆盖过多的样本数据，失去拟合的意义。<br>
 　　要度量空间中点距离的话，有好几种度量方式，比如常见的曼哈顿距离计算，欧式距离（或欧几里得距离）等等。不过通常KNN算法中使用的是欧式距离，这里只是简单说一下，拿二维平面为例，，二维空间两个点的欧式距离计算公式如下：<img src="https://zhangman123456.github.io/post-images/1594891829868.jpg" alt="" loading="lazy">　　这样一来，不难得出，KNN算法最简单粗暴的方式就是计算预测点和所有样本点之间的距离，选出前K个距离最小的点看看哪个种类的点的数量最多。<br>
