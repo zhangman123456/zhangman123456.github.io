@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-07-29T13:00:16.116Z</updated>
+    <updated>2020-07-30T04:11:57.037Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -22,7 +22,11 @@
 看图中的这个例子：<img src="https://zhangman123456.github.io/post-images/1596021541880.png" alt="" loading="lazy">　　矩阵中，描述了5个用户(U1,U2,U3,U4 ,U5)对4个物品(D1,D2,D3,D4)的评分(1-5分)，- 表示没有评分，我们的目的是把没有评分的给预测出来，然后按预测的分数高低，给用户进行物品推荐。<br>
 　　将图中的数据看作是一个维度为N×Ｍ的评分矩阵R，则R可以看做两个矩阵P(N×Ｋ)和Ｑ(Ｋ×Ｍ)的乘积。对于P,Q矩阵的解释，直观上，P矩阵是N个用户对K个主题的关系，Q矩阵是K个主题跟M个物品的关系，或者说，N个用户通过K个主题对M个物品进行评分，那么我们在模拟时，也要通过这K个主题进行模拟。至于K个主题具体是什么，在算法里面K是一个参数，需要调节的，通常10~100之间。<br>
 具体步骤：<br>
-　　矩阵的分解（R是真实的评分矩阵，R^是我们预测得到的矩阵。R与R^越接近，就证明我们取得两个矩阵P和Q的预测模型越好。N和M是确定的参数值不会改变，因此K的取值对整个模型的预测结果起着至关重要的作用)<img src="https://zhangman123456.github.io/post-images/1595990213069.jpg" alt="" loading="lazy"><br>
+　　矩阵的分解（R是真实的评分矩阵，R^是我们预测得到的矩阵。R与R^越接近，就证明我们取得两个矩阵P和Q的预测模型越好。N和M是确定的参数值不会改变，因此K的取值对整个模型的预测结果起着至关重要的作用)<img src="https://zhangman123456.github.io/post-images/1596076385604.png" alt="" loading="lazy"><br>
+　　另外在这里补充说明一下矩阵相乘的规则：Ｒ＾矩阵的第ｉ行第ｊ列的元素 = P 矩阵第ｉ行的元素×Ｑ矩阵第ｊ列的元素。注意P和Q不能颠倒。<img src="https://zhangman123456.github.io/post-images/1596076633042.png" alt="" loading="lazy"><br>
+　　损失函数的平方等于真实值与预测值之间差值的平方，可以直接把预测值替换成P和Q的乘积。所以损失函数的值越小，真实值与预测值之间的差距越小，也就意味着我们拟合的结果越接近真实值，也就是我们对矩阵分解的结果越好。所以接下来就是解决问题的核心：基于梯度下降的优化算法。利用梯度下降的方法，一步步逼近损失函数的最小值<img src="https://zhangman123456.github.io/post-images/1596076674246.jpg" alt="" loading="lazy"><br>
+　　但是在机器学习中，我们通常在损失函数的后面加上一个正则项，公式如下：<img src="https://zhangman123456.github.io/post-images/1596076704081.png" alt="" loading="lazy"><br>
+　　这样一来，我们也需要对算法做出一点改动<img src="https://zhangman123456.github.io/post-images/1596076729403.jpg" alt="" loading="lazy"><br>
 <strong>代码实现</strong></p>
 <pre><code>import numpy as np  
 import matplotlib.pyplot as plt
@@ -120,8 +124,9 @@ plt.show()
  [0.95748942 0.58335244 2.40522644 3.99863775]
  [3.24266723 1.56060602 4.87411612 4.00000375]]
 
-损失函数的收敛过程为：![](https://zhangman123456.github.io/post-images/1596027375419.PNG)
+损失函数的收敛过程为：
 </code></pre>
+<figure data-type="image" tabindex="1"><img src="https://zhangman123456.github.io/post-images/1596076909331.PNG" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
