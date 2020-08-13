@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CNN卷积神经网络 | 张曼</title>
-<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1597327143671">
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1597327340933">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="CNN卷积神经网络 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
@@ -25,7 +25,7 @@ CNN的基本架构
       <div class="main-content">
         <div class="site-header">
   <a href="https://zhangman123456.github.io">
-  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1597327143671" alt="">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1597327340933" alt="">
   </a>
   <h1 class="site-title">
     张曼
@@ -116,9 +116,10 @@ CNN的基本架构
 <h2 id="padding">padding</h2>
 <p>在这个栗子中，padding = 1，那么在卷积计算中，为什么要用padding呢？从卷积神经网络的移动方式我们不难看出，依照卷积神经网络的计算方式，越靠近矩阵中间的数据，被计算的次数越多，也就意味着对于结果矩阵的影响越大，越靠近矩阵边缘的数据，被计算的次数就越少，比如四个角落的数据，被计算用到的次数只有一次。而这显然是不公平的，所以我们可以在Input Volume的周围加上一圈对计算结果不造成影响的0作为行和列，使矩阵中的每一个元素都能得到充分的计算，这就是padding的作用。</p>
 <h1 id="池化层">池化层</h1>
-<p>相较于卷积层，池化层则简单得多。池化层的操作主要是将输入矩阵的长和宽缩小一定的倍数，但是矩阵的深度不发生改变，也就是矩阵的特征数不发生改变。我们可以来看一个栗子<br>
+<p>相较于卷积层，池化层则简单得多。池化层的操作主要是将输入矩阵的长和宽缩小一定的倍数，但是矩阵的深度不发生改变，也就是矩阵的特征数不发生改变。我们可以来看一个栗子<img src="https://zhangman123456.github.io/post-images/1597327194631.PNG" alt="" loading="lazy"><br>
 这个三维矩阵很大，我们通过缩减长和宽，比如将长和宽缩减到原来的1/2，这样矩阵的体积就缩减到了原来的1/4。<br>
-接下来我们来看池化的方式。既然是缩减到原来的1/4，方式就是以一个2×2的矩阵为一个单位，从每一个矩阵中选取一个数字来代表这个矩阵。我们可以形象地理解为，降低一张图片的像素。<img src="https://zhangman123456.github.io/post-images/1597138688806.PNG" alt="" loading="lazy"></p>
+接下来我们来看池化的方式。既然是缩减到原来的1/4，方式就是以一个2×2的矩阵为一个单位，从每一个矩阵中选取一个数字来代表这个矩阵。我们可以形象地理解为，降低一张图片的像素。<img src="https://zhangman123456.github.io/post-images/1597327243704.PNG" alt="" loading="lazy"></p>
+<figure data-type="image" tabindex="1"><img src="https://zhangman123456.github.io/post-images/1597138688806.PNG" alt="" loading="lazy"></figure>
 
               </div>
               <div class="toc-container">
