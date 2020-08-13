@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>矩阵分解 | 张曼</title>
-<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1596094504333">
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1597327143671">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="矩阵分解 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
@@ -22,7 +22,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://zhangman123456.github.io">
-  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1596094504333" alt="">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1597327143671" alt="">
   </a>
   <h1 class="site-title">
     张曼
@@ -111,20 +111,16 @@ def matrix(R, P, Q, K, alpha, beta):
     while 1 :
     #使用梯度下降的一步步的更新P,Q矩阵直至得到最终收敛值
         steps = steps + 1    
-        eR = np.dot(P,Q)
+        eR = np.dot(P,Q)# dot(P,Q) 表示矩阵内积,即Pik和Qkj，
         e=0
-        for i in range(len(R)):
-            for j in range(len(R[i])):
+        for i in range(len(R)):#len(R)代表的是R的行数
+            for j in range(len(R[i])):#这两行就是遍历R中的每一个元素
                 if R[i][j]&gt;0:
-                    # .dot(P,Q) 表示矩阵内积,即Pik和Qkj k由1到k的和eij为真实值和预测值的之间的误差,
-                    eij=R[i][j]-np.dot(P[i,:],Q[:,j]) 
-                    #求误差函数值，我们在下面更新p和q矩阵的时候我们使用的是化简得到的最简式，较为简便，
-                    #但下面我们仍久求误差函数值这里e求的是每次迭代的误差函数值，用于绘制误差函数变化图
-                    e=e+pow(R[i][j] - np.dot(P[i,:],Q[:,j]),2) 
-                    for k in range(K):
-                        #在上面的误差函数中加入正则化项防止过拟合
-                        e=e+(beta/2)*(pow(P[i][k],2)+pow(Q[k][j],2))
-                        
+                    #k由1到k的和，eij为真实值和预测值的之间的误差,
+                    eij=R[i][j]-.dot(P[i,:],Q[:,j]) 
+                    e=e+pow(R[i][j] - np.dot(P[i,:],Q[:,j]),2) #求误差函数值，我们在下面更新p和q矩阵的时候我们使用的是化简得到的最简式，较为简便，但下面我们仍久求误差函数值，这里e求的是每次迭代的误差函数值，用于绘制误差函数变化图
+                    for k in range(K):#在上面的误差函数中加入正则化项防止过拟合
+                        e=e+(beta/2)*(pow(P[i][k],2)+pow(Q[k][j],2))     
                     for k in range(K):
                         #在更新p,q时我们使用化简得到了最简公式
                         P[i][k]=P[i][k]+alpha*(2*eij*Q[k][j]-beta*P[i][k])

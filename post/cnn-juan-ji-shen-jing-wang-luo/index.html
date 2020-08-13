@@ -1,0 +1,204 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CNN卷积神经网络 | 张曼</title>
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1597327143671">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="CNN卷积神经网络 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="CNN卷积神经网络是DNN人工神经网络中最成功的一类。
+CNN的基本架构
+这个模型看起来有些庞大，也很复杂，但是我们可以一层一层地来拆解它。
+卷积层
+卷积层是对输入的数据进行一个卷积操作，我们可以通过一个动态图来理解：https://cs2..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zhangman123456.github.io">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1597327143671" alt="">
+  </a>
+  <h1 class="site-title">
+    张曼
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              CNN卷积神经网络
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-08-08
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>CNN卷积神经网络是DNN人工神经网络中最成功的一类。</p>
+<h1 id="cnn的基本架构">CNN的基本架构<img src="https://zhangman123456.github.io/post-images/1596882654558.PNG" alt="" loading="lazy"></h1>
+<p>这个模型看起来有些庞大，也很复杂，但是我们可以一层一层地来拆解它。</p>
+<h1 id="卷积层">卷积层</h1>
+<p>卷积层是对输入的数据进行一个卷积操作，我们可以通过一个动态图来理解：<a href="https://cs231n.github.io/assets/conv-demo/index.html">https://cs231n.github.io/assets/conv-demo/index.html</a><br>
+这个动态图也许有些难以理解，但是没关系，我们可以把它分成几帧来处理。而在具体讲解之前，我们先来解释几个专业术语。<br>
+1.Input Volume：指的是输入后经过填充大的三维矩阵。由于CNN主要应用于图像的识别和处理，所以我们可以象征性地把这个矩阵的长和宽理解为输入的图片的长和宽，把矩阵的深度理解为这个图片的特征。比如gdb图片，其实就是指这个图片上的每一个像素点都是由三个特征g,b,d组成的。<br>
+2.Filter：可 以近似的理解为人工神经网络中的权重参数，只不过人工神经网络中的参数往往是一个固定的数值，而CNN中的参数往往是一个我们自己定义的三维矩阵。<br>
+3.Bias：设置的偏置值。可以近似的理解为神经网络中的偏置值。<br>
+4.stride：步长。每计算出一个值，矩阵向右或者向下移动的距离。<br>
+5.padding：填充。在我们计算时，习惯在输入的矩阵的周围加上若干圈数值为零的行和列，方便后面的计算。填充的值就是这个加上的行或者列数。<br>
+6.Output Volume：经过一次卷积计算后输出的矩阵。<br>
+第一次计算：<img src="https://zhangman123456.github.io/post-images/1597029569759.PNG" alt="" loading="lazy"><br>
+图中我们不难看出，Filter的深度必须和Input Volume的深度相同。把图中这三对用黑色线相连的矩阵相乘，然后把得出的三个数值相加，在加上偏置值就是Output Volume第一个矩阵的第一个值。<br>
+如图，第一行黑线相连的两个矩阵，相乘是这样计算：<br>
+　　　　０×１＋０×１＋０×１＋０× -1＋１× -1＋１×０＋０× -1＋０×１＋１×０＝ -2<br>
+每一对矩阵都是这样计算，计算完之后相加然后加上偏置值，就是最右边第四列Output Volume的第一个元素的值。</p>
+<p>接下来，根据我们stride的长度，将每一层的矩阵向右平移两个单位，然后重复第一次计算的操作，将计算出来的值填入Output Volume，作为第二个元素的值。<br>
+<img src="https://zhangman123456.github.io/post-images/1597067686341.PNG" alt="" loading="lazy"></p>
+<p>我们可以大致总结卷积计算中矩阵移动的规律<br>
+<img src="https://zhangman123456.github.io/post-images/1597029547398.gif" alt="" loading="lazy">根据这样的移动规律，我们可以将整个矩阵针对第一个Filter进行计算。并以此类推，根据一样的方式对第二个FIlter进行计算，得出的结果填入Output Volume的第二个矩阵。</p>
+<h2 id="padding">padding</h2>
+<p>在这个栗子中，padding = 1，那么在卷积计算中，为什么要用padding呢？从卷积神经网络的移动方式我们不难看出，依照卷积神经网络的计算方式，越靠近矩阵中间的数据，被计算的次数越多，也就意味着对于结果矩阵的影响越大，越靠近矩阵边缘的数据，被计算的次数就越少，比如四个角落的数据，被计算用到的次数只有一次。而这显然是不公平的，所以我们可以在Input Volume的周围加上一圈对计算结果不造成影响的0作为行和列，使矩阵中的每一个元素都能得到充分的计算，这就是padding的作用。</p>
+<h1 id="池化层">池化层</h1>
+<p>相较于卷积层，池化层则简单得多。池化层的操作主要是将输入矩阵的长和宽缩小一定的倍数，但是矩阵的深度不发生改变，也就是矩阵的特征数不发生改变。我们可以来看一个栗子<br>
+这个三维矩阵很大，我们通过缩减长和宽，比如将长和宽缩减到原来的1/2，这样矩阵的体积就缩减到了原来的1/4。<br>
+接下来我们来看池化的方式。既然是缩减到原来的1/4，方式就是以一个2×2的矩阵为一个单位，从每一个矩阵中选取一个数字来代表这个矩阵。我们可以形象地理解为，降低一张图片的像素。<img src="https://zhangman123456.github.io/post-images/1597138688806.PNG" alt="" loading="lazy"></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#cnn%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84">CNN的基本架构!</a></li>
+<li><a href="#%E5%8D%B7%E7%A7%AF%E5%B1%82">卷积层</a>
+<ul>
+<li><a href="#padding">padding</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B1%A0%E5%8C%96%E5%B1%82">池化层</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zhangman123456.github.io/post/ju-zhen-fen-jie/">
+              <h3 class="post-title">
+                矩阵分解
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zhangman123456.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
