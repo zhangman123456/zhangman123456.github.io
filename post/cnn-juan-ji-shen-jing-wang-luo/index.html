@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CNN卷积神经网络 | 张曼</title>
-<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1597327340933">
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1599147327179">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="CNN卷积神经网络 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
@@ -25,7 +25,7 @@ CNN的基本架构
       <div class="main-content">
         <div class="site-header">
   <a href="https://zhangman123456.github.io">
-  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1597327340933" alt="">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1599147327179" alt="">
   </a>
   <h1 class="site-title">
     张曼
@@ -108,8 +108,9 @@ CNN的基本架构
 图中我们不难看出，Filter的深度必须和Input Volume的深度相同。把图中这三对用黑色线相连的矩阵相乘，然后把得出的三个数值相加，在加上偏置值就是Output Volume第一个矩阵的第一个值。<br>
 如图，第一行黑线相连的两个矩阵，相乘是这样计算：<br>
 　　　　０×１＋０×１＋０×１＋０× -1＋１× -1＋１×０＋０× -1＋０×１＋１×０＝ -2<br>
-每一对矩阵都是这样计算，计算完之后相加然后加上偏置值，就是最右边第四列Output Volume的第一个元素的值。</p>
-<p>接下来，根据我们stride的长度，将每一层的矩阵向右平移两个单位，然后重复第一次计算的操作，将计算出来的值填入Output Volume，作为第二个元素的值。<br>
+每一对矩阵都是这样计算，计算完之后相加然后加上偏置值，就是最右边第四列Output Volume的第一个元素的值。<br>
+接下来，根据我们stride的长度，将每一层的矩阵向右平移两个单位，然后重复第一次计算的操作，将计算出来的值填入Output Volume，作为第二个元素的值。<br>
+<img src="https://zhangman123456.github.io/post-images/1597327648096.PNG" alt="" loading="lazy"><br>
 <img src="https://zhangman123456.github.io/post-images/1597067686341.PNG" alt="" loading="lazy"></p>
 <p>我们可以大致总结卷积计算中矩阵移动的规律<br>
 <img src="https://zhangman123456.github.io/post-images/1597029547398.gif" alt="" loading="lazy">根据这样的移动规律，我们可以将整个矩阵针对第一个Filter进行计算。并以此类推，根据一样的方式对第二个FIlter进行计算，得出的结果填入Output Volume的第二个矩阵。</p>
@@ -118,8 +119,11 @@ CNN的基本架构
 <h1 id="池化层">池化层</h1>
 <p>相较于卷积层，池化层则简单得多。池化层的操作主要是将输入矩阵的长和宽缩小一定的倍数，但是矩阵的深度不发生改变，也就是矩阵的特征数不发生改变。我们可以来看一个栗子<img src="https://zhangman123456.github.io/post-images/1597327194631.PNG" alt="" loading="lazy"><br>
 这个三维矩阵很大，我们通过缩减长和宽，比如将长和宽缩减到原来的1/2，这样矩阵的体积就缩减到了原来的1/4。<br>
-接下来我们来看池化的方式。既然是缩减到原来的1/4，方式就是以一个2×2的矩阵为一个单位，从每一个矩阵中选取一个数字来代表这个矩阵。我们可以形象地理解为，降低一张图片的像素。<img src="https://zhangman123456.github.io/post-images/1597327243704.PNG" alt="" loading="lazy"></p>
-<figure data-type="image" tabindex="1"><img src="https://zhangman123456.github.io/post-images/1597138688806.PNG" alt="" loading="lazy"></figure>
+接下来我们来看池化的方式。既然是缩减到原来的1/4，方式就是以一个2×2的矩阵为一个单位，从每一个矩阵中选取一个数字来代表这个矩阵。我们可以形象地理解为，降低一张图片的像素。<img src="https://zhangman123456.github.io/post-images/1597327243704.PNG" alt="" loading="lazy"><br>
+接下来我们来看几个数据问题：<br>
+我们设输入的<br>
+<img src="https://zhangman123456.github.io/post-images/1597138688806.PNG" alt="" loading="lazy"><br>
+我的博客即将同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan?invite_code=15i4llkq69fhl</p>
 
               </div>
               <div class="toc-container">
