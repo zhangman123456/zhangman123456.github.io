@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CNN卷积神经网络 | 张曼</title>
-<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1599147327179">
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1601155583574">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="CNN卷积神经网络 | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
@@ -25,7 +25,7 @@ CNN的基本架构
       <div class="main-content">
         <div class="site-header">
   <a href="https://zhangman123456.github.io">
-  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1599147327179" alt="">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1601155583574" alt="">
   </a>
   <h1 class="site-title">
     张曼
@@ -85,7 +85,7 @@ CNN的基本架构
                 2020-08-08
               </span>
               <span>
-                5 min read
+                9 min read
               </span>
               
             </div>
@@ -111,8 +111,9 @@ CNN的基本架构
 每一对矩阵都是这样计算，计算完之后相加然后加上偏置值，就是最右边第四列Output Volume的第一个元素的值。<br>
 接下来，根据我们stride的长度，将每一层的矩阵向右平移两个单位，然后重复第一次计算的操作，将计算出来的值填入Output Volume，作为第二个元素的值。<br>
 <img src="https://zhangman123456.github.io/post-images/1597327648096.PNG" alt="" loading="lazy"><br>
+不难看出，接下来的计算也是这样，将第一次平移后的矩阵再平移一次，重复第一次的操作，将计算出来的值填入Output Volume作为第三个元素的值<br>
 <img src="https://zhangman123456.github.io/post-images/1597067686341.PNG" alt="" loading="lazy"></p>
-<p>我们可以大致总结卷积计算中矩阵移动的规律<br>
+<p>根据这三帧图像，我们可以大致总结卷积计算中矩阵移动的规律：<br>
 <img src="https://zhangman123456.github.io/post-images/1597029547398.gif" alt="" loading="lazy">根据这样的移动规律，我们可以将整个矩阵针对第一个Filter进行计算。并以此类推，根据一样的方式对第二个FIlter进行计算，得出的结果填入Output Volume的第二个矩阵。</p>
 <h2 id="padding">padding</h2>
 <p>在这个栗子中，padding = 1，那么在卷积计算中，为什么要用padding呢？从卷积神经网络的移动方式我们不难看出，依照卷积神经网络的计算方式，越靠近矩阵中间的数据，被计算的次数越多，也就意味着对于结果矩阵的影响越大，越靠近矩阵边缘的数据，被计算的次数就越少，比如四个角落的数据，被计算用到的次数只有一次。而这显然是不公平的，所以我们可以在Input Volume的周围加上一圈对计算结果不造成影响的0作为行和列，使矩阵中的每一个元素都能得到充分的计算，这就是padding的作用。</p>
@@ -122,8 +123,96 @@ CNN的基本架构
 接下来我们来看池化的方式。既然是缩减到原来的1/4，方式就是以一个2×2的矩阵为一个单位，从每一个矩阵中选取一个数字来代表这个矩阵。我们可以形象地理解为，降低一张图片的像素。<img src="https://zhangman123456.github.io/post-images/1597327243704.PNG" alt="" loading="lazy"><br>
 接下来我们来看几个数据问题：<br>
 我们设输入的<br>
-<img src="https://zhangman123456.github.io/post-images/1597138688806.PNG" alt="" loading="lazy"><br>
-我的博客即将同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan?invite_code=15i4llkq69fhl</p>
+<img src="https://zhangman123456.github.io/post-images/1597138688806.PNG" alt="" loading="lazy"></p>
+<p>用numpy来实现离散卷积</p>
+<pre><code>import numpy as np
+import h5py
+#import matplotlib.pyplot as plt
+
+#%load_ext autoreload
+#%autoreload 2
+
+np.random.seed(1) # 指定随机数种子
+def zero_pad(X, pad):#把输入的矩阵进行填充
+    &quot;&quot;&quot;
+    把数据集X的图像边界用0值填充。填充情况发生在每张图像的宽度和高度上。
+    
+    参数:
+    X -- 图像数据集 (m, n_H, n_W, n_C)，分别表示样本数、图像高度、图像宽度、通道数 
+    pad -- 整数，每个图像在垂直和水平方向上的填充量
+    
+    返回:
+    X_pad -- 填充后的图像数据集 (m, n_H + 2*pad, n_W + 2*pad, n_C)
+    &quot;&quot;&quot;
+    # X数据集有4个维度，填充发生在第2个维度和第三个维度上；填充方式为0值填充
+    X_pad = np.pad(X, (
+        (0, 0),# 样本数维度，不填充
+        (pad, pad), #n_H维度，上下各填充pad个像素
+        (pad, pad)), #n_C维度，不填充
+                 mode='constant', constant_values = (0, 0))
+    
+    return X_pad
+
+def numpy_conv(inputs,filter,_result,padding=&quot;VALID&quot;):#计算每一个filter对应的结果矩阵的值
+    H, W = inputs.shape
+    filter_size = filter.shape[0]
+    # default np.floor
+    filter_center = int(filter_size / 2.0)
+    filter_center_ceil = int(np.ceil(filter_size / 2.0))
+
+    #这里先定义一个和输入一样的大空间，但是周围一圈后面会截掉
+    result = np.zeros((_result.shape))
+    #更新下新输入,SAME模式下，会改变HW
+    H, W = inputs.shape
+    #print(&quot;new size&quot;,H,W)
+    #卷积核通过输入的每块区域，stride=1，注意输出坐标起始位置
+    for r in range(0, 3):
+        for c in range(0, 3):
+            cur_input = inputs[2*r:2*r + filter_size,
+                        2*c:2*c + filter_size]# 池化大小的输入区域
+            cur_output = cur_input * filter#和核进行乘法计算
+            conv_sum = np.sum(cur_output) #再把所有值求和
+            result[r, c] = conv_sum #当前点输出值
+    return result
+
+def _conv(inputs, filter,strides=[1,1], bias = [1,0], padding=&quot;VALTD&quot;):
+    C_in, H, W = inputs.shape
+    filter_size = filter.shape[2]
+    # C_out指核对个数，也是最后结果对通道个数
+    C_out = filter.shape[0]
+    # 同样我们任务核对宽高相等
+    result = np.zeros([C_out, int(np.ceil(H - filter_size + 2) /2), int(np.ceil(W - filter_size + 2) /2)],np.float32) 
+    # 核个数对循环
+    for channel_out in range(C_out):#遍历每一个filter矩阵
+        for channel_in in range(C_in):#遍历输入矩阵的每一层（也可以说是遍历filter的每一层） # 当前通道对数据
+            channel_data = inputs[channel_in]
+            if channel_out == 0:
+                result[channel_out, :, :] += numpy_conv(channel_data, filter[channel_out][channel_in], result[0],padding)+1
+            else:
+                result[channel_out, :, :] += numpy_conv(channel_data, filter[channel_out][channel_in], result[0],padding)
+
+    # print(result)
+    return result
+
+if __name__ == '__main__':
+    #输入[C_in,H,W]
+    X = np.array([[[0,1,1,0,2],[2,2,2,2,1],[1,0,0,2,0],[0,1,1,0,0],[1,2,0,0,2]],[[1,0,2,2,0],[0,0,0,2,0],[1,2,1,2,1],[1,0,0,0,0],[1,2,1,1,1]],[[2,1,2,0,0],[1,0,0,1,0],[0,2,1,0,1],[0,1,2,2,2],[2,1,0,0,1]]])
+    inputs = zero_pad(X,1)
+
+    print(&quot;input:\n&quot;,inputs,&quot;\n&quot;)
+
+    #卷积核[C_out,C_in,K,K]
+    filter = np.zeros([2, 3, 3, 3])
+    filter[0] = np.array([[[-1,1,0],[0,1,0],[0,1,1]],[[-1,-1,0],[0,0,0],[0,-1,0]],[[0,0,-1],[0,1,0],[1,-1,-1]]])
+    filter[1] = np.array([[[1,1,-1],[-1,-1,1],[0,-1,1]],[[0,1,0],[-1,0,-1],[-1,1,0]],[[-1,0,0],[-1,0,1],[-1,0,0]]])
+
+    print(&quot;filter\n&quot;,filter,&quot;\n&quot;)
+    
+    final_result = _conv(inputs, filter, strides=[1,1],bias = [1,0], padding = &quot;VALID&quot;)
+
+    print(&quot;result\n&quot;,final_result,&quot;\n&quot;)
+</code></pre>
+<p>我的博客即将同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan?invite_code=15i4llkq69fhl</p>
 
               </div>
               <div class="toc-container">
