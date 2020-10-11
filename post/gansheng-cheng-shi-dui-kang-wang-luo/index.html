@@ -1,0 +1,212 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GAN（生成式对抗网络） | 张曼</title>
+<link rel="shortcut icon" href="https://zhangman123456.github.io/favicon.ico?v=1602410826684">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zhangman123456.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="GAN（生成式对抗网络） | 张曼 - Atom Feed" href="https://zhangman123456.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="从字面上来理解GAN
+GAN（生成式对抗网络）是一种深度学习模型，是近年来复杂分布上无监督学习最具前景的方法之一。通常情况下，机器学习的模型可大体分为两类，生成模型（Generative Model）和判别模型（Discriminative..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zhangman123456.github.io">
+  <img class="avatar" src="https://zhangman123456.github.io/images/avatar.png?v=1602410826684" alt="">
+  </a>
+  <h1 class="site-title">
+    张曼
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              GAN（生成式对抗网络）
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-10-11
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="从字面上来理解gan">从字面上来理解GAN</h1>
+<p>GAN（生成式对抗网络）是一种深度学习模型，是近年来复杂分布上无监督学习最具前景的方法之一。通常情况下，机器学习的模型可大体分为两类，生成模型（Generative Model）和判别模型（Discriminative Model）。<br>
+　　判别模型：给定一张图，判断这张图里的动物是猫还是狗<br>
+　　生成模型：给一系列猫的图片，生成一张新的猫咪（不在数据集里）<br>
+　　对于判别模型，损失函数是容易定义的，因为输出的目标相对简单。但对于生成模型，损失函数的定义就不是那么容易。我们对于生成结果的期望，往往是一个暧昧不清，难以数学公理化定义的范式。所以不妨把生成模型的回馈部分，交给判别模型处理。也就是说，GAN将机器学习中的这两大类模型紧密的结合到了一起。</p>
+<h2 id="gan简述">GAN简述</h2>
+<p>GAN的基本原理其实非常简单，这里以生成图片为例进行说明。假设我们有两个网络，G（Generator）和D（Discriminator），它们的功能分别是：<br>
+　　G是一个生成图片的网络，它接收一个随机的噪声z，通过这个噪声生成图片，记做G(z)。<br>
+　　D是一个判别网络，判别一张图片是不是“真实的”。它的输入参数是x，x代表一张图片，输出D（x）代表x为真实图片的概率，如果为1，就代表100%是真实的图片，而输出为0，就代表不可能是真实的图片。<br>
+　　GAN 网络的目标是使得生成的数据和真实数据更接近，为了达到这个目的，生成网络G的目标就是尽量生成真实的图片去欺骗判别网络D。而D的目标就是尽量把G生成的图片和真实的图片分别开来。这样，G和D构成了一个动态的“博弈过程”，也就是所谓的对抗式生成网络。在这个博弈的过程中，Ｇ网络和Ｄ网络都会不断地优化自身的参数，最终使这两个网络都能够达到比较好的效果。</p>
+<h1 id="gan的具体实现">GAN的具体实现</h1>
+<h2 id="两个重要函数g和d">两个重要函数：G和D</h2>
+<p>G：生成器就是一个神经网络，或看成一个函数，低维度的向量生成一个高维度的向量。举个具体的例子，随机输入一组1000维的噪声数据，生成一张64*\64*3维的图片。训练完成后的生成器，输入向量每一个元素可以对应图片的一个象征，<br>
+D：D是一个对我们输入的真实数据和G生成的假图进行二分类神经网络训练的网络，输入的是数据或者图片，输出的是一个0~1区间内的数字，用靠近1的程度判断这个输入数据是不是真实数据。这个实现过程不必再详述。</p>
+<h2 id="实现原理">实现原理</h2>
+<p>我们用x代表真实数据，z代表噪音，那么G(z)代表一个输入噪音通过生成网络后的输出，Ｄ(x)就是对输入数据的判别（比如对输入的一张图片进行判别，如果判断出是狗的图片就输出1，如果判断出不是就输出0）。一方面，我们希望判别网络D能够准确判断出数据的真实性，即D(x)尽可能接近1，D(G(z))尽可能接近于0；另一方面，我们希望生成网络产生的数据非常接近真实数据，即D(G(z))尽可能接近于1。<br>
+损失函数：<img src="https://zhangman123456.github.io/post-images/1602405791240.jpg" alt="" loading="lazy"><br>
+可以这样理解：损失函数做的是最大化 D 的区分度，最小化 G 输出和真实数据的区别。<br>
+损失函数可以拆分为两部分：<br>
+判别模型：log(D1(x))+log(1-D2(G(z)))…(1)<br>
+生成模型：log(D2(G(z)))…(2)<br>
+当判别模型能力强时，D1(x)-&gt;1, D2(G(z))-&gt;0,(1)式趋近于 0<br>
+当生成模型能力强时，D2(G(z))-&gt;1,(2)式趋近于 0</p>
+<h2 id="训练过程">训练过程</h2>
+<p><img src="https://zhangman123456.github.io/post-images/1602408221020.PNG" alt="" loading="lazy"><br>
+　　当训练 D 的时候，上一轮 G 产生的图片，和真实图片，直接拼接在一起，作为 x。然后根<br>
+据，按顺序摆放 0 和 1，假图对应 0，真图对应 1。然后就可以通过，x 输入生成一个 score<br>
+（从 0 到 1 之间的数），通过 score 和 y 组成的损失函数，就可以进行梯度反传了。<br>
+<img src="https://zhangman123456.github.io/post-images/1602408351453.PNG" alt="" loading="lazy"><br>
+　　当训练 G 的时候，需要把 G 和 D 当作一个整体，我在这里取名叫做‘D_on_G’。这个整体(下面简称 DG 系统)的输出仍然是 score。输入一组随机向量，就可以在 G 生成一张图，通过D 对生成的这张图进行打分，这就是 DG 系统的前向过程。score=1 就是 DG 系统需要优化的目标，score 和 y=1 之间的差异可以组成损失函数，然后可以反向传播梯度。<br>
+注意：在这个训练过程中，D 的参数是不可训练的。这样就能保证 G 的训练是符合 D 的打分标准的。</p>
+<h2 id="具体实现步骤代码实现">具体实现步骤（代码实现）</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E4%BB%8E%E5%AD%97%E9%9D%A2%E4%B8%8A%E6%9D%A5%E7%90%86%E8%A7%A3gan">从字面上来理解GAN</a>
+<ul>
+<li><a href="#gan%E7%AE%80%E8%BF%B0">GAN简述</a></li>
+</ul>
+</li>
+<li><a href="#gan%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0">GAN的具体实现</a>
+<ul>
+<li><a href="#%E4%B8%A4%E4%B8%AA%E9%87%8D%E8%A6%81%E5%87%BD%E6%95%B0g%E5%92%8Cd">两个重要函数：G和D</a></li>
+<li><a href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">实现原理</a></li>
+<li><a href="#%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B">训练过程</a></li>
+<li><a href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">具体实现步骤（代码实现）</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zhangman123456.github.io/post/bpr-bei-xie-si-li-lun/">
+              <h3 class="post-title">
+                BPR贝叶斯理论
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zhangman123456.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
