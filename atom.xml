@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zhangman123456.github.io</id>
     <title>张曼</title>
-    <updated>2020-10-11T10:07:11.238Z</updated>
+    <updated>2020-11-30T10:32:34.513Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zhangman123456.github.io"/>
     <link rel="self" href="https://zhangman123456.github.io/atom.xml"/>
@@ -10,6 +10,72 @@
     <logo>https://zhangman123456.github.io/images/avatar.png</logo>
     <icon>https://zhangman123456.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 张曼</rights>
+    <entry>
+        <title type="html"><![CDATA[词向量-word2vec]]></title>
+        <id>https://zhangman123456.github.io/post/ci-xiang-liang-word2vec/</id>
+        <link href="https://zhangman123456.github.io/post/ci-xiang-liang-word2vec/">
+        </link>
+        <updated>2020-11-28T11:35:29.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="首先我们来看几个概念">首先我们来看几个概念。</h1>
+<h2 id="什么是embedding">什么是embedding</h2>
+<p>embedding就是我们机器学习总的嵌入传播层。就是用一个低维的向量表示一个物体，可以是一个词，或是一个商品，或是一个电影等等。这个embedding向量的性质是能使距离相近的向量对应的物体有相近的含义，比如 Embedding(复仇者联盟)和Embedding(钢铁侠)之间的距离就会很接近，但 Embedding(复仇者联盟)和Embedding(乱世佳人)的距离就会远一些。<br>
+但是用向量来表示一个物体，这是词向量的工作。而Embedding是一层具体的操作，那么Embedding的作用到底是什么呢？<br>
+首先我们来看一张图。<br>
+<img src="https://zhangman123456.github.io/post-images/1606731548011.jpg" alt="" loading="lazy"><br>
+这是一个非常简单的矩阵乘法。<br>
+假设：我们有一个2 x 6的矩阵，然后乘上一个6 x 3的矩阵后，变成了一个2 x 3的矩阵。也就是说，通过这个矩阵乘法，我们把图中的数字矩阵缩小了一半左右。这就是Embedding层额用处，通过矩阵乘法，在不损失原矩阵信息的前提下，把输入的矩阵的规模降低许多倍，或者说，降维。尤其是在应用One-Hot Encoding（独热编码）来进行词向量的表达时，Embedding的作用就显得尤为重要。<br>
+简单来说，Embedding能够用低维向量对物体进行编码还能保留其含义的特点非常适合深度学习。</p>
+<h2 id="one-hot-encoding独热编码">One-Hot Encoding（独热编码）</h2>
+<p>独热编码，又称一位有效编码，其方法是使用N位状态寄存器来对N个状态进行编码，每个状态都有它独立的寄存器位，并且在任意时候，其中只有一位有效。</p>
+<p>先来举一个简单的例子进行理解：<br>
+feature1= [“male”, “female”]<br>
+feature1= [“from Europe”, “from US”, “from Asia”]<br>
+feature1= [“uses Firefox”, “uses Chrome”, “uses Safari”, “uses Internet Explorer”]</p>
+<p>如果我们将以上特征组成的数据直接用数字表示：<br>
+[“male”, “from US”, “uses Internet Explorer”] 表示为[0, 1, 3]<br>
+[“female”, “from Asia”, “uses Chrome”]表示为[1, 2, 1]<br>
+我们可以发现，这些数字并不是连续有序的，所以不能直接应用在分类器中（分类器默认数据是连续的），对于这个问题，One-Hot Encoding可以解决。</p>
+<p>使用独热编码转化为：<br>
+feature1=[01,10]<br>
+feature2=[001,010,100]<br>
+feature3=[0001,0010,0100,1000]</p>
+<p>所以对于每一个特征，如果它有m个可能的值，经过独热编码后就会变成m个二元特征，并且这些特征互斥，每次只有一个激活。因此，数据就变成了稀疏的。</p>
+<p>然后</p>
+<h1 id="神经语言模型nnlm">神经语言模型(NNLM)</h1>
+<p>在学习word2vet之前，我们先来了解NNLM。NNLM全称为Neural Network Language Model，是一种用于自然语言处理的模型。<br>
+首先，One-Hot vector是一种常用于自然语言处理的词向量的表达方式。比如说，一个词库或者说一个字典里面一共有V个单词，那么用One-Hot vector来表示的话，一共有V个单词，就是一个长度为V的低维向量，也就是共有V个状态，每一个单词对应的词向量的状态是：在这个长度为V的向量中，这个单词所在的位置为1，其余位置都为0。我们用W来表示这个单词对应的词向量，也就是我们所说的一个单词对应的独热编码。<br>
+这个模型的作用是，用给定单词的前n-1个单词（的独热编码）来预测第n个单词（的独热编码）是什么。<br>
+模型的输入：W<sub>1</sub>，W<sub>2</sub>，，，，W<sub>n-1</sub>，用来预测W<sub>n</sub>的值<img src="https://zhangman123456.github.io/post-images/1606726329456.jpg" alt="" loading="lazy"></p>
+<h1 id="word2vec">word2vec</h1>
+<p>word2vec分为两个模型，CBOW和skip-gram。</p>
+<h1 id="cbow">CBOW</h1>
+<p>CBOW的作用是根据一个单词的上下文来预测这个单词。<br>
+具体的流程是：输入单词W<sub>t</sub>的前c个单词W<sub>t-c</sub>，W<sub>t-c+1</sub>，，，W<sub>t-1</sub>和后c个单词W<sub>t+1</sub>，W<sub>t+2</sub>，，，W<sub>t+c</sub>，预测单词W<sub>t</sub><br>
+具体流程如下：<img src="https://zhangman123456.github.io/post-images/1606728866135.webp" alt="" loading="lazy"></p>
+<h1 id="skip-gram">skip-gram</h1>
+<p>skip-gram和CBOW的作用相反，根据一个单词来推测上下文。<br>
+即输入一个单词W<sub>t</sub>，来预测前后c个单词。<br>
+具体流程如下：<img src="https://zhangman123456.github.io/post-images/1606728986556.png" alt="" loading="lazy"><br>
+不难看出，其实就是把CBOW的模型反过来。<br>
+而这两个模型的参数量都是：V*N+N*V<br>
+我们可以看出，和NNLM相比，这两个模型的参数量明显少了很多，复杂度也更低。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[KGAT]]></title>
+        <id>https://zhangman123456.github.io/post/kgat/</id>
+        <link href="https://zhangman123456.github.io/post/kgat/">
+        </link>
+        <updated>2020-11-07T11:11:00.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="ckg">CKG</h1>
+<p>CKG（collaborative knowledge graph）由user-item graph和knowledge graph组成，其中关系为user-item-entity。可将网络中的节点同意看作实体（entity）</p>
+<h2 id="user-item二部图">user-item二部图</h2>
+<p>这里我们将交互数据表示为用户-项目二分图G1，定义为**{(u，yui，i)|u ∈ U，i ∈ I)}**，其中U和I分别表示用户和项目集，link yui表示在user u和item i之间存在观察到的交互。<br>
+如果link yui=1，则表示用户和项目之间存在交互关系；<br>
+如果link yui=0，则表示用户和项目之间不存在交互关系。</p>
+<h2 id="knowledge-graph知识图谱">Knowledge Graph（知识图谱）</h2>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[GAN（生成式对抗网络）]]></title>
         <id>https://zhangman123456.github.io/post/gansheng-cheng-shi-dui-kang-wang-luo/</id>
@@ -755,208 +821,6 @@ def main():
 if __name__ == '__main__':
     main()
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[线性回归]]></title>
-        <id>https://zhangman123456.github.io/post/xian-xing-hui-gui/</id>
-        <link href="https://zhangman123456.github.io/post/xian-xing-hui-gui/">
-        </link>
-        <updated>2020-07-11T10:59:13.000Z</updated>
-        <content type="html"><![CDATA[<p>1.该<u>样本回归方程</u>就是我我们需要拟合的曲线：<br>
-                     <strong>h(x) = θ<sub>0</sub> + θ<sub>1</sub>x</strong>；<br>
-2.得出关于该回归方程的误差函数:<img src="https://zhangman123456.github.io/post-images/1594575102477.gif" alt="" loading="lazy"><br>
-3.对误差函数求导：<br>
-<img src="https://zhangman123456.github.io/post-images/1594575689326.gif" alt="" loading="lazy"><br>
-4.之后更新的到的θ<sub>0</sub> 和 θ<sub>1</sub><img src="https://zhangman123456.github.io/post-images/1594575337724.gif" alt="" loading="lazy">（公式里的α是学习率，我们可以象征性地理解为步长）<br>
-5.接下来，利用梯度下降的方法。这里我们可以分别使用批量梯度下降和随机梯度下降的方法来实现**（有助于更加具体地理解这两种梯度下降的算法）**<br>
-（1）批量梯度下降算法<img src="https://zhangman123456.github.io/post-images/1594577818861.png" alt="" loading="lazy"><u>（上标i代表具体的某一个数据；x<sub>j</sub>代表系数θ<sub>j</sub>对应的因变量）</u><br>
-  每一次的迭代，都把从θ<sub>0</sub> 到 θ<sub>j</sub>的每一个参数进行迭代；而每一次对每一个参数进行迭代时，都需要把全部的样本都使用一遍，这样重复迭代直到θ<sub>j</sub>收敛为止。所以说该算法的复杂度是O(i（j+1）)<br>
-（为了防止我忘了，我写了一个一看就懂的版本）<br>
-  <img src="https://zhangman123456.github.io/post-images/1594579705255.jpg" alt="" loading="lazy"><br>
-（2）随机梯度下降法<img src="https://zhangman123456.github.io/post-images/1594579776426.png" alt="" loading="lazy"><br>
-  每一次的迭代，都把从θ<sub>0</sub> 到 θ<sub>j</sub>的每一个参数进行迭代；而每一次对每一个参数进行迭代时，只使用所有样本中的一个数据，一旦到达最大的迭代次数或是满足预期的精度，就停止。这样算法的复杂度为O(j+1)，就下降了很多。<br>
-  <u>（还是一个一看就会的版本）</u><img src="https://zhangman123456.github.io/post-images/1594580748171.jpg" alt="" loading="lazy"></p>
-<pre><code>批量梯度下降算法
-@author: 
-&quot;&quot;&quot;
-
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
- 
-#数据
-a = np.random.standard_normal((1, 500))
-x = [150,200,250,300,350,400,600]#自变量x
-y = [6450,7450,8450,9450,11450,15450,18450]#因变量y
-y = y - a*10
-y = y[0]
- 
-def Optimization(x,y,theta,learning_rate):
-    for i in range(iter):#批量梯度下降算法的核心，iter是最大迭代的次数。
-        theta = Updata(x,y,theta,learning_rate)更新参数用的函数
-    return theta#这是全部迭代之后的最后一组参数值 
-def Updata(x,y,theta,learning_rate):
-    m = len(x)#因变量的长度，即每次迭代的次数
-    sum = 0.0
-    sum1 = 0.0
-    alpha = learning_rate
-    h = 0
-    for i in range(m):#每一次迭代，都用到全部的样本数据
-        h = theta[0] + theta[1] * x[i]#一元线性回归方程，即我们需要拟合的曲线。
-        sum += (h - y[i])
-        sum1 += (h - y[i]) * x[i]
-    theta[0] -= alpha * sum / m #更新theta[0]
-    theta[1] -= alpha * sum1 / m #更新theta[1]
-    return theta#每一次迭代都输出更新后的参数
-#数据初始化
-learning_rate = 0.001#学习率
-theta = [0,0]#最开始的参数值
-iter = 1000#循环的次数
-theta = Optimization(x,y,theta,learning_rate)
- 
-plt.rcParams['font.sans-serif']=['SimHei']#该函数用来定义图形的各种默认属性，比如字符显示，线条样式，窗口大小，坐标轴宽度等等属性
-plt.rcParams['axes.unicode_minus'] = False
-
-plt.figure(figsize=(35,35))
-plt.scatter(x,y,marker='o')
-plt.xticks(fontsize=40)
-plt.yticks(fontsize=40)
-plt.xlabel('特征X',fontsize=40)
-plt.ylabel('Y',fontsize=40)
-plt.title('样本',fontsize=40)
-plt.savefig(&quot;样本.jpg&quot;)
-'''
-#可视化
-b = np.arange(0,50)
-c = theta[0] + b * theta[1]
- 
-plt.figure(figsize=(35,35))
-plt.scatter(x,y,marker='o')
-plt.plot(b,c)
-plt.xticks(fontsize=40)
-plt.yticks(fontsize=40)
-plt.xlabel('特征X',fontsize=40)
-plt.ylabel('Y',fontsize=40)
-plt.title('结果',fontsize=40)
-plt.savefig(&quot;结果.jpg&quot;)
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[梯度下降法]]></title>
-        <id>https://zhangman123456.github.io/post/ti-du-xia-jiang-fa-yi/</id>
-        <link href="https://zhangman123456.github.io/post/ti-du-xia-jiang-fa-yi/">
-        </link>
-        <updated>2020-07-11T01:15:53.000Z</updated>
-        <content type="html"><![CDATA[<p>#基本思想<br>
-假设我们爬山，如果想最快的上到山顶，那么我们应该从山势最陡的地方上山。也就是山势变化最快的地方上山<br>
-同样，如果从任意一点出发，需要最快搜索到函数最大值，那么我们也应该从函数变化最快的方向搜索。<br>
-函数变化最快的方向是什么呢？函数的<strong>梯度</strong>。<br>
-假如函数为一元函数，<strong>梯度</strong>就是该函数的倒数<img src="https://zhangman123456.github.io/post-images/1594430603494.png" alt="" loading="lazy"><br>
-如果为二元函数，梯度定义为：<img src="https://zhangman123456.github.io/post-images/1594430651348.png" alt="" loading="lazy">（此处用到高数偏导数的知识来求二元函数的倒数）<br>
-如果需要找的是函数极小点，那么应该从负梯度的方向寻找，该方法称之为梯度下降法。<br>
-<img src="https://zhangman123456.github.io/post-images/1594430871728.png" alt="" loading="lazy">要搜索极小值C点，在A点必须向x增加方向搜索，此时与A点梯度方向相反；在B点必须向x减小方向搜索，此时与B点梯度方向相反。总之，搜索极小值，必须向负梯度方向搜索。<br>
-假设函数 y = f(x1,x2,......,xn) 只有一个极小点。初始给定参数为  X0 = (x10,x20,......xn0) 从这个点如何搜索才能找到原函数的极小值点？<br>
-方法：</p>
-<ol>
-<li>首先设定一个较小的正数η，ε;</li>
-<li>求当前位置处的各个偏导数：<img src="https://zhangman123456.github.io/post-images/1594431281163.png" alt="" loading="lazy"></li>
-<li>修改当前函数的参数值，公式如下：<br>
-<img src="https://zhangman123456.github.io/post-images/1594431327433.png" alt="" loading="lazy"></li>
-<li>如果参数变化量小于，退出；否则返回2。<br>
-例：任给一个初始出发点，设为x0=-4，利用梯度下降法求函数y=x²/2-2x的极小值。<br>
-准备工作：<br>
-（1）给定两个参数值η = 0.9，ε = 0.01（η即为学习效率，或者步长）<br>
-（2）计算导数：dy/dx = x - 2;<br>
-一.（1）计算当前导数值：y' = -4 - 2 = -6；<br>
-   （2）修改当前的参数值：x = x-ηy' = -4 - 0.9*(-6) = 1.4;<br>
-  （3）计算△x = -0.9 * （-6）= 5.4。<br>
-  （4）将△x与ε进行比较，如果△x&lt;=ε ，则变化量满足终止条件，终止循环，输出参数x；<br>
-              如果△x&gt;ε，则继续进行循环<br>
-              通过比较，可知△x&gt;ε，继续进行循环<br>
-二.（1）计算当前导数值：y' = 1.4 - 2 = -0.6；<br>
-   （2）修改当前的参数值：x = x-ηy' = 1.4 - 0.9*(-0.6)= 1.94;<br>
-  （3）计算△x = -0.9 * （-0.6）= 0.54。<br>
-  （4）将△x与ε进行比较，如果△x&lt;=ε ，则变化量满足终止条件，终止循环，输出参数x；<br>
-              如果△x&gt;ε，则继续进行循环<br>
-              通过比较，可知△x&gt;ε，继续进行循环。<br>
-三.（1）计算当前导数值：y' = 1.94 - 2 = -0.06；<br>
-   （2）修改当前的参数值：x = x-ηy' = 1.94 - 0.9*(-0.06)= 1.994;<br>
-  （3）计算△x = -0.9 * （-0.06）= 0.054。<br>
-  （4）将△x与ε进行比较，如果△x&lt;=ε ，则变化量满足终止条件，终止循环，输出参数x；<br>
-              如果△x&gt;ε，则继续进行循环<br>
-              通过比较，可知△x&gt;ε，继续进行循环。<br>
-四.（1）计算当前导数值：y' = 1.994 - 2 = -0.006；<br>
-   （2）修改当前的参数值：x = x-ηy' = 1.994 - 0.9*(-0.006)= 1.9994;<br>
-  （3）计算△x = -0.9 * （-0.006）= 0.0054。<br>
-  （4）将△x与ε进行比较，如果△x&lt;=ε ，则变化量满足终止条件，终止循环，输出参数x；<br>
-              如果△x&gt;ε，则继续进行循环<br>
-              通过比较，可知△x&lt;=ε，则终止循环，输出此时的x即为函数的极小点。<br>
-python代码实现</li>
-</ol>
-<pre><code class="language-python">＃解决实例的Python代码
-import numpy as np
-inport matplotlib as mpl
-import matplotlib.pyplot as plt
-
-mpl.rcParams['font.family'] = 'sans-serif'
-mpl.rcParams['font.sans-serif'] = 'SimHei'
-mpl.rcParams['axes.unicode_minus'] = false
-
-#构建一维元素图形
-def f1(x):
-　　return 0.5 * (x ** 2) - 2x
-def h1(x):
-　　return x-2
-
-#使用梯度下降法
-GD_X = []
-GD_Y = []
-x = -4
-alpha = 0.9
-f_change = np.abs(alpha * hl(x))
-f_current = f_change
-GD_X.append(x)
-GD_Y.append(f_current)
-
-#迭代次数
-iter_num = 0
-while f_change &gt;0.01 and iter_num&lt;10:
-　　iter_num+=1
-　　x = x - x - alpha * h1(x)
-　　tem = f1(x)
-　　f_change = np.abs(alpha * hl(x))
-　　f_current = tmp
-　　GD_X.append(f_current)
-
-print(u'最终的结果：(%.5f,%.5f)'%(x,f_current))
-pirnt(u'迭代次数：%d'%iter_num)
-printf(GD_X)
-</code></pre>
-<p>#损失函数<br>
-学习了梯度下降之后，我们引入新的概念：<strong>损失函数</strong>。便于我们直接利用梯度下降法计算损失函数的最小值。<br>
-我们可以近似地将<strong>损失函数</strong>理解为方差或者平方差。根据给出的一系类数据我们可以得出相关的函数，再根据该函数和不同变量，我们可以得出不同变量对应的不同的函数值。而每个函数值和每个真实的数值之间有一定的误差，根据这些误差我们可以得到相关的函数，即<strong>损失函数</strong>。<strong>损失函数</strong>的值越小，我们之前得到的函数就越精确。<br>
-例：根据某组数据得到预测的函数：h(x) = θ₁ + θ₂x。只含有一个特征/输入变量。在这个式子中θ₁，θ₂都是未知参数，x是已知数据。我们的目的是得到合适的参数使得我们的预测尽可能准确。这时就需要引入损失函数的概念。<br>
-<img src="https://zhangman123456.github.io/post-images/1594383086368.jpg" alt="" loading="lazy"><em>(暂时不用管1/2)</em><br>
-上图中的J(θ₁,θ₂)是一个关于θ₁和θ₂的二元函数，也就是<strong>损失函数</strong>。在三维空间坐标系内，存在一对点（θ₁,θ₂）使得J(θ₁,θ₂)有最小值<br>
-然后对损失函数进行一个简单的推导（利用梯度下降的算法）<br>
-<img src="https://zhangman123456.github.io/post-images/1594444209052.jpg" alt="" loading="lazy">（在这个公式里突然多了一个α，它表示的是学习率，用来限定步长的大小，也很容易理解，毕竟得到的偏导是类似斜率的东西，只是一个方向，总得加个数值，才能表示向这个方向移动的距离。<br>
-对于的取值，一般都取的比较小，但也不要太小，太小就意味着迭代步数要增加，运算时间边长。另外，迭代的步数要自己设置。<br>
-原文链接：https://blog.csdn.net/i96jie/java/article/details/81206473）<br>
-#梯度下降法的三个变种<br>
-了解了梯度下降法的核心思想以及损失函数后，我们接着了解梯度下降法的三个变种<br>
-1.批量梯度下降法（BGD）<br>
-其需要计算整个训练集的梯度，即：<img src="https://i.loli.net/2019/08/12/zAiXFLUSyrd5qap.png" alt="" loading="lazy">其中η为学习率，用来控制更新的“力度”/&quot;步长&quot;。<br>
-优点：<br>
-    对于凸目标函数，可以保证全局最优； 对于非凸目标函数，可以保证一个局部最优。<br>
-2.随机梯度下降算法（SGD）<br>
-仅计算某个样本的梯度，即针对某一个训练样本 xi及其label yi更新参数：<img src="https://i.loli.net/2019/08/12/ItgcSRaT4jreKMl.png" alt="" loading="lazy">逐步减小学习率，SGD表现得同BGD很相似，最后都可以有不错的收敛。<br>
-优点：<br>
-    更新频次快，优化速度更快; 可以在线优化(可以无法处理动态产生的新样本)；一定的随机性导致有几率跳出局部最优(随机性来自于用一个样本的梯度去代替整体样本的梯度)。<br>
-3.小批量梯度下降算法(MBGD),计算包含n个样本的mini-batch的梯度：<img src="https://i.loli.net/2019/08/12/ItgcSRaT4jreKMl.png" alt="" loading="lazy">MBGD是训练神经网络最常用的优化方法。<br>
-优点：<br>
-参数更新时的动荡变小，收敛过程更稳定，降低收敛难度；可以利用现有的线性代数库高效的计算多个样本的梯度。</p>
 ]]></content>
     </entry>
 </feed>
